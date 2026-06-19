@@ -247,10 +247,25 @@ def run_and_save_trace(variables: list[Variable]) -> None:
 
 
 if __name__ == "__main__":
-    v1 = Variable("x1", [1, 2])
-    v2 = Variable("x2", [1, 2])
-    v3 = Variable("x3", [2, 3])
-    v4 = Variable("x4", [2, 3, 4, 5])
 
-    variables = [v1, v2, v3, v4]
+    variables = [
+        Variable("x1", [1, 2]),
+        Variable("x2", [1, 2]),
+        Variable("x3", [2, 3]),
+        Variable("x4", [2, 3, 4, 5]),
+    ]
+
+    # variables = [
+    #     Variable("A", [1]),
+    #     Variable("B", [2]),
+    #     Variable("C", [3]),
+    #     Variable("D", [4]),
+    # ]
+
+    # variables = [
+    #     Variable("A", [1, 2, 3]),
+    #     Variable("B", [1, 2, 3]),
+    #     Variable("C", [1, 2, 3]),
+    # ]
+
     run_and_save_trace(variables)
