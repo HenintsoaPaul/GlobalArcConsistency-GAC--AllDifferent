@@ -177,35 +177,6 @@ def run_regin_filter(variables: list[Variable]) -> tuple[bool, dict[str, list[in
         for val in v.domain:
             val_node = f"val_{val}"
             
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
             is_matching = (matched_val == val)
             same_scc = (node_to_scc_idx[var_node] == node_to_scc_idx[val_node])
             on_alt_path = (var_node in reachable_from_unmatched and val_node in reachable_from_unmatched)

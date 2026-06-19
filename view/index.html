@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AllDifferent Constraint Visualizer (Regin's Algorithm)</title>
+  <meta name="description" content="An interactive visualization tool demonstrating Regin's global filtering algorithm for the AllDifferent constraint." />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <div class="header-title-wrapper">
+      <h1>AllDifferent Algorithm Visualizer</h1>
+      <span id="subtitle-info">Loading Regin trace...</span>
+    </div>
+    <div class="header-controls-wrapper">
+      <!-- Toggle for filtering view style -->
+      <div class="toggle-wrapper">
+        <span class="toggle-label">Filtering Style:</span>
+        <label class="switch">
+          <input type="checkbox" id="animation-style-toggle" checked />
+          <span class="slider round"></span>
+        </label>
+        <span id="toggle-status" class="toggle-status-text">Animation (Fade)</span>
+      </div>
+
+      <label for="trace-select" class="trace-label">Scenario:</label>
+      <select id="trace-select">
+        <option value="../data/all_different_trace.json">Default Scenario (README Example)</option>
+      </select>
+
+      <input type="file" id="trace-upload" accept=".json" />
+      <button id="btn-upload">
+        📂 Upload Custom Trace
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- LEFT -->
+    <div class="left">
+      <div class="step-header">
+        <div>
+          <div class="step-phase" id="phase-label">Phase</div>
+          <div class="step-badge" id="step-badge">Step 0</div>
+        </div>
+        <div class="step-desc-wrapper">
+          <h2 id="step-title">Initial Bipartite Graph</h2>
+          <div class="step-desc" id="step-desc">Loading description...</div>
+        </div>
+      </div>
+
+      <div class="graph-card">
+        <h3>Bipartite Variable-Value Graph</h3>
+        <svg id="graph-canvas" viewBox="0 0 600 400"></svg>
+      </div>
+
+      <div class="domains-card">
+        <h3>Variable Domains</h3>
+        <div class="domains-grid" id="domains-grid"></div>
+      </div>
+
+      <div class="nav">
+        <button id="btn-prev" onclick="go(-1)">← Prev</button>
+        <div class="progress">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span class="step-counter" id="step-counter"></span>
+        <button id="btn-next" onclick="go(1)">Next →</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+      <div class="metrics-card">
+        <h3>Step Analysis Details</h3>
+        
+        <div class="metric-section" id="matching-details-section">
+          <div class="metric-title">Maximum Matching</div>
+          <div class="metric-value" id="matching-size">—</div>
+          <div class="matching-pairs" id="matching-pairs-list"></div>
+        </div>
+
+        <div class="metric-section" id="scc-details-section">
+          <div class="metric-title">Strongly Connected Components</div>
+          <div class="scc-list" id="scc-list"></div>
+        </div>
+
+        <div class="metric-section" id="reachability-details-section">
+          <div class="metric-title">Alternating Paths Reachability</div>
+          <div class="reachable-nodes-list" id="reachable-nodes-list"></div>
+        </div>
+      </div>
+
+      <div class="comparison-card">
+        <div class="comparison-header">
+          <h3>Domain Comparison Table</h3>
+          <button id="btn-download-md" class="btn-download">
+            💾 Download Table
+          </button>
+        </div>
+        <div class="table-container">
+          <table id="comparison-table">
+            <thead>
+              <tr>
+                <th>Variable</th>
+                <th>Initial</th>
+                <th>Pruned</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="legend-card">
+        <h3>Legend</h3>
+        <div class="legend-group">
+          <h4>Nodes</h4>
+          <div class="legend-row">
+            <div class="swatch node-var"></div>
+            <span>Variable Node (Left Column)</span>
+          </div>
+          <div class="legend-row">
+            <div class="swatch node-val"></div>
+            <span>Value Node (Right Column)</span>
+          </div>
+          <div class="legend-row">
+            <div class="swatch node-unmatched"></div>
+            <span>Unmatched Value Node</span>
+          </div>
+          <div class="legend-row">
+            <div class="swatch node-reachable"></div>
+            <span>Reachable from Unmatched (Alternating Path)</span>
+          </div>
+          <div class="legend-row">
+            <div class="swatch scc-swatch-example"></div>
+            <span>SCC Member (Multi-node component)</span>
+          </div>
+        </div>
+
+        <div class="legend-group" style="margin-top: 0.75rem;">
+          <h4>Edges (Bipartite Arcs)</h4>
+          <div class="legend-row">
+            <div class="edge-line-legend normal"></div>
+            <span>Normal / Potential Value Arc</span>
+          </div>
+          <div class="legend-row">
+            <div class="edge-line-legend matched"></div>
+            <span>Matched Arc (Part of Bipartite Matching)</span>
+          </div>
+          <div class="legend-row">
+            <div class="edge-line-legend alternating"></div>
+            <span>Alternating Path Arc (Reachable)</span>
+          </div>
+          <div class="legend-row">
+            <div class="edge-line-legend pruned"></div>
+            <span>Pruned Arc (Will be filtered out)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="visualize_all_different.js"></script>
+</body>
+
+</html>
